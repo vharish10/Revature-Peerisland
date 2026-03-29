@@ -200,3 +200,116 @@ where CustomerId in
     group by CustomerId
     having COUNT(*) > 1
 );
+
+/*
+VIEWS
+*/
+
+create view vw_CustomerAccountDetails as
+select c.CustomerId, c.CustomerName, a.AccountNumber, a.AccountType, a.Balance, a.AccountStatus
+from Customers c
+join Accounts a
+on c.CustomerId = a.CustomerId;
+
+create view vw_BranchAccountSummary as
+select b.BranchName, count(a.AccountId) as TotalAccounts, sum(a.Balance) as TotalBalance
+from Branches b
+left join Accounts a
+on b.BranchId = a.BranchId
+group by b.BranchName;
+
+create view vw_LoanCustomerDetails as
+select c.CustomerName, l.LoanType, l.LoanAmount, l.InterestRate, l.LoanStatus, b.BranchName
+from Loans l
+join Customers c 
+on l.CustomerId = c.CustomerId
+join Branches b
+on l.BranchId = b.BranchId;
+
+create view vw_HighValueAccounts as
+select * from Accounts
+where Balance>100000;
+
+create view vw_DailyTransactions as
+select a.AccountNumber, t.TransactionDate, t.TransactionType, t.Amount, t.description
+from Transactions t
+join Accounts a
+on t.AccountId = a.AccountId;
+
+create view vw_ActiveCustomers as
+select * from Customers
+where CustomerStatus = 'Active';
+
+create view vw_ApprovedLoans as
+select * from Loans
+where LoanStatus = 'Approved';
+
+create view vw_CustomerAccountBranch as
+select c.CustomerName, a.AccountNumber, a.AccountType,a.Balance,b.BranchName,b.City
+from Customers c
+join Accounts a
+on c.CustomerId = a.CustomerId
+join Branches b
+on a.BranchId = b.BranchId;
+
+/* Stored Procedure  */
+
+DELIMITER //
+create procedure GetAllEmployees()
+BEGIN
+SELECT * FROM Employees;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE GetAccountsByCustomer(IN p_CustomerId INT)
+BEGIN
+SELECT * FROM Accounts
+where CustomerId=p_CustomerId;
+END //
+DELIMITER ;
+
+DELIMITER //
+create procedure GetBranchTotalBalance(IN p_BranchId INT)
+BEGIN
+select b.BranchName, SUM(a.Balance) from 
+branches b 
+JOIN accounts a 
+ON b.branchId=a.branchId
+group by a.balance;
+END //
+DElIMITER ;
+
+DELIMITER //
+create procedure GetApprovedLoanCount(OUT p_TotalCount INT)
+BEGIN 
+select COUNT(*) INTO p_TotalCount
+from loans
+where LoanStatus='Approved';
+END //
+DELIMITER ;
+
+DELIMITER //
+create procedure AddTransaction(IN p_AccountId int,IN p_TransactionType varchar(20),IN p_Amount decimal(10,2),IN p_Description varchar(255))
+BEGIN
+    insert into Transactions(AccountId,TransactionDate,TransactionType,Amount,Description)
+    values(p_AccountId,NOW(),p_TransactionType,p_Amount,p_Description);
+END //
+DELIMITER ;
+
+DELIMITER //
+create procedure GetCustomerLoans(IN p_CustomerId int)
+BEGIN
+	select * from Loans
+    where CustomerId = p_CustomerId;
+END //
+DELIMITER ;
+
+DELIMITER //
+create procedure ChangeAccountStatus(IN p_AccountId int,IN p_NewStatus varchar(20))
+BEGIN
+    update Accounts
+    set AccountStatus = p_NewStatus
+    where AccountId = p_AccountId;
+END //
+DELIMITER ;
