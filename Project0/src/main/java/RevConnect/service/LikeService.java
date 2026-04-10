@@ -23,7 +23,7 @@ public class LikeService {
             return "Post liked successfully!";
 
         } catch (PostNotFoundException | AlreadyLikedException e) {
-            throw e; // pass to main
+            throw e; 
         } catch (Exception e) {
             e.printStackTrace();
             return " Error while liking post!";
