@@ -34,12 +34,10 @@ public class LikeServiceTest {
         int postId = 3;
 
         try {
-            // first like (ignore if already liked)
             try {
                 likeService.likePost(userId, postId);
             } catch (AlreadyLikedException ignored) {}
 
-            // second like → must throw
             assertThrows(AlreadyLikedException.class, () -> {
                 likeService.likePost(userId, postId);
             });
@@ -52,7 +50,7 @@ public class LikeServiceTest {
     @Test
     void testLikeNonExistingPost() {
         assertThrows(PostNotFoundException.class, () -> {
-            likeService.likePost(1, 999); // invalid post
+            likeService.likePost(1, 999); 
         });
     }
 
