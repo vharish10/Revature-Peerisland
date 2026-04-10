@@ -9,7 +9,7 @@ import RevConnect.dao.LikeDAOImp;
 public class CommentService {
 
     CommentDAOImp commentDAO = new CommentDAOImp();
-    LikeDAOImp likeDAO = new LikeDAOImp(); // reuse postExists
+    LikeDAOImp likeDAO = new LikeDAOImp(); 
 
     public String addComment(Comment comment) throws PostNotFoundException {
 
@@ -35,9 +35,7 @@ public class CommentService {
             if (!likeDAO.postExists(postId)) {
                 throw new PostNotFoundException("Post does not exist!");
             }
-
             return commentDAO.getCommentsByPost(postId);
-
         } catch (PostNotFoundException e) {
             throw e;
         } catch (Exception e) {
@@ -52,10 +50,9 @@ public class CommentService {
             if (!commentDAO.commentExists(commentId)) {
                 throw new CommentNotFoundException("Comment not found!");
             }
+            int rows=commentDAO.deleteComment(commentId, userId);
 
-            int rows = commentDAO.deleteComment(commentId, userId);
-
-            if (rows == 0) {
+            if (rows==0) {
                 throw new UnauthorizedException("You can only delete your own comment!");
             }
 
