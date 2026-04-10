@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class UserDAOImp {
 
     public String registerUser(User user) {
-        String sql = "INSERT INTO User(Name, userName, email, password, location, isPublic, DOB, userType) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into User(Name, userName, email, password, location, isPublic, DOB, userType) values (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement prepared = connection.prepareStatement(sql)) {
@@ -85,7 +85,7 @@ public class UserDAOImp {
                 prepared.setBoolean(index++,user.getStatus());
             }
 
-            prepared.setInt(index, user.getUser_id());
+            prepared.setInt(index, user.getUserId());
 
             if(prepared.executeUpdate() > 0){
                 return "User Profile updated successfully";
@@ -99,7 +99,7 @@ public class UserDAOImp {
     }
 
     public User loginUser(String email, String password) {
-        String sql = "SELECT * FROM user WHERE email = ? AND password = ?";
+        String sql = "select * from user where email = ? and password = ?";
         try(Connection connection=DBConnection.getConnection();
             PreparedStatement prepared= connection.prepareStatement(sql);) {
             prepared.setString(1, email);
