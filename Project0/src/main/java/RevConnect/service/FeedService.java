@@ -12,8 +12,6 @@ public class FeedService {
     PostDAOImp postDAO = new PostDAOImp();
 
     public List<Post> getFeed(int userId) throws FeedGenerationException {
-
-        // 🔥 ADD THIS BLOCK
         if (userId <= 0) {
             throw new FeedGenerationException("Invalid user ID");
         }
