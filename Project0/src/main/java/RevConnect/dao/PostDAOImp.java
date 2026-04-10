@@ -31,7 +31,7 @@ public class PostDAOImp {
     public List<Post> getAllPosts() {
         List<Post> list=new ArrayList<>();
 
-        String sql="select * from Posts order by created_at desc";
+        String sql="select * from Posts order by creationDate desc";
 
         try(Connection connection=DBConnection.getConnection();
              PreparedStatement prepared=connection.prepareStatement(sql);
@@ -52,7 +52,7 @@ public class PostDAOImp {
     }
 
     public String deletePost(int postId, int userId) {
-        String sql = "DELETE FROM posts WHERE postId=? AND userId=?";
+        String sql = "delete from Posts where postId=? and userId=?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -74,7 +74,7 @@ public class PostDAOImp {
     }
 
     public String updatePost(int postId, int userId, String content) {
-        String sql = "UPDATE posts SET content=? WHERE post_id=? AND user_id=?";
+        String sql = "update Posts set content=? where postId=? and userId=?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
