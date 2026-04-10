@@ -35,13 +35,13 @@ public class FollowDAOImp {
     public int unfollow(int followerId, int followingId) throws Exception{
         String sql="delete from Follow where followerId=? and followingId=?";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement prepared = connection.prepareStatement(sql)) {
 
-            ps.setInt(1, followerId);
-            ps.setInt(2, followingId);
+            prepared.setInt(1, followerId);
+            prepared.setInt(2, followingId);
 
-            return ps.executeUpdate();
+            return prepared.executeUpdate();
         }
     }
 
