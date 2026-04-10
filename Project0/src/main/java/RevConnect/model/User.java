@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 public class User {
 
-    private int user_id;
+    private int userId;
     private String name;
     private String userName;
     private String password;
@@ -27,12 +27,12 @@ public class User {
         this.userType=userType;
     }
 
-    public void setUserId(int user_id){
-        this.user_id=user_id;
+    public void setUserId(int userId){
+        this.userId=userId;
     }
 
     public int getUserId() {
-        return user_id;
+        return userId;
     }
 
     public void setName(String name) {
